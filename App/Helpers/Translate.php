@@ -6,7 +6,8 @@ function translate_key($input){
         "name" => "نام",
         "phone_number" => "شماره تلفن",
         "username" => "نام کاربری",
-        "password" => "رمز عبور"
+        "password" => "رمز عبور",
+        "mobile_number" => "شماره موبایل"
     ];
 
     $isFind = false;

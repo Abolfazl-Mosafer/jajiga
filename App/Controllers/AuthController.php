@@ -50,10 +50,12 @@ class AuthController
     public function register($request){
         // validate request
         $this->validate([
-            'username||required|min:3|max:25',
-            'password||required|min:8'
+            'username||required|min:3|max:25|string',
+            'mobile_number||required|length:11|string'
         ], $request);
-        $this->checkUnique('users', 'username', $request->username);
+        $this->checkUnique(table: 'users', array: [['username', $request->username], ['mobile_number', $request->mobile_number]]);
+
+        dd("test faild!");
 
         $newUser = $this->queryBuilder->table('users')
             ->insert([

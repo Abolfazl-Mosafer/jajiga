@@ -150,6 +150,7 @@ class QueryBuilder {
                     return $statement->fetchAll(PDO::FETCH_ASSOC);
                 }
                 else {
+                    $this->where = [];
                     return $statement->fetch(PDO::FETCH_ASSOC);
                 }
             }

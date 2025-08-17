@@ -16,7 +16,7 @@ $request = (object) [
 
 $response = $authMiddleware->handle($request);
 
-if(!$response) exit();
+// if(!$response) exit();
 
 $router = new Router();
 
@@ -24,3 +24,4 @@ $router = new Router();
 $router->post('v1','/login', AuthController::class, 'login');
 $router->post('v1','/register', AuthController::class, 'register');
 $router->post('v1','/verify', AuthController::class, 'verify');
+$router->get('v1','/test', AuthController::class, 'test');

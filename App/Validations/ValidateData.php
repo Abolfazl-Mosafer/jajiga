@@ -85,15 +85,29 @@ trait ValidateData
         } return true;
     }
 
-    public function checkUnique($table, $key, $value){
-        // unique Resourse check
-        $hasResourse = $this->queryBuilder->table($table)
-            ->where($key, '=', $value)
-            ->get()->execute();
+    public function checkUnique($table = null, $key = null, $value = null, $array = false){
+        if($array){
+            foreach ($array as $item){
+                // unique Resourse check
+                $hasResourse = $this->queryBuilder->table($table)
+                    ->where($item[0], '=', $item[1])
+                    ->get()->execute();
 
-        if($hasResourse){
-            $this->sendResponse(message: "مقدار " . translate_key($key) . " تکراری است یا از قبل وجود دارد!", error: true, status: HTTP_BadREQUEST);
-            return exit();
+                if($hasResourse){
+                    $this->sendResponse(message: "مقدار " . translate_key($item[0]) . " تکراری است یا از قبل وجود دارد!", error: true, status: HTTP_BadREQUEST);
+                    return exit();
+                }
+            }
+        }else{
+            // unique Resourse check
+            $hasResourse = $this->queryBuilder->table($table)
+                ->where($key, '=', $value)
+                ->get()->execute();
+
+            if($hasResourse){
+                $this->sendResponse(message: "مقدار " . translate_key($key) . " تکراری است یا از قبل وجود دارد!", error: true, status: HTTP_BadREQUEST);
+                return exit();
+            }
         }
     }
 }

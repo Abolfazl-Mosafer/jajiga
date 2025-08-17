@@ -18,12 +18,14 @@ class AuthMiddleware {
         // Check if the request has a JWT token
         $token = $this->getTokenFromRequest($request);
         if (!$token) {
-            return $this->sendResponse(null, "Unauthorized!", true, 401);
+            $this->sendResponse(null, "Unauthorized!", true, 401);
+            return exit();
         }
 
         // Verify the JWT token
         if (!$this->verifyToken($token)) {
-            return $this->sendResponse(null, "Unauthorized Token!", true, 401);
+            $this->sendResponse(null, "Unauthorized Token!", true, 401);
+            return exit();
         }
 
         return true;
