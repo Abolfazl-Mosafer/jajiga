@@ -52,7 +52,8 @@ class AuthController
         $this->validate([
             'username||required|min:3|max:25|string',
             'display_name||min:2|max:40|string',
-            'mobile_number||required|length:11|string'
+            'mobile_number||required|length:11|string',
+            'role||enum:admin,support,guest,host',
         ], $request);
         $this->checkUnique(table: 'users', array: [['username', $request->username], ['mobile_number', $request->mobile_number]]);
 

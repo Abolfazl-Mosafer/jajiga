@@ -69,6 +69,12 @@ trait ValidateData
                             $length_value = (int)explode(':', $validation)[1];
                             if(isset($request->$key)) if(mb_strlen($request->$key) != $length_value) $isError = true && array_push($errorsMessages, "مقدار " . translate_key($key) . " باید برابر با ".$length_value." کارکتر باشد");
                         }
+
+                        // check enum values
+                        if(str_contains($validation, "enum")){
+                            $enums = explode(',' , trim($validation, 'enum:'));
+                            if(isset($request->$key)) if(!in_array($request->$key, $enums)) $isError = true && array_push($errorsMessages, "مقدار " . translate_key($key) . "معتبر نیست!");
+                        }
                     }
                 } else if($itemsCount == 1){
                     if(!isset($request->$field) || empty($request->$field)) $isError = true && array_push($errorsMessages, "لطفا " . translate_key($field) . " را وارد کنید");
