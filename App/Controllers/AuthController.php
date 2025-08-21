@@ -54,15 +54,20 @@ class AuthController
             'display_name||min:2|max:40|string',
             'mobile_number||required|length:11|string',
             'role||enum:admin,support,guest,host',
+            'status||enum:pending,reject,accept',
         ], $request);
         $this->checkUnique(table: 'users', array: [['username', $request->username], ['mobile_number', $request->mobile_number]]);
 
-        dd("test faild!");
-
-        $newUser = $this->queryBuilder->table('users')
+        $newUser = $this->queryBuilder->table('users')        
             ->insert([
                 'username' => $request->username,
-                'password' => $request->password
+                'display_name' => $request->display_name ?? NULL,
+                'mobile_number' => $request->mobile_number,
+                'profile_image' => $request->profile_image ?? NULL,
+                'role' => $request->role ?? 'guest',
+                'status' => $request->status ?? 'pending',
+                'created_at' => $request->time(),
+                'updated_at' => $request->time(),
             ])->execute();
 
         return $this->sendResponse(data: $newUser, message: "حساب کاربری شما با موفقیت ایجاد شد!");
