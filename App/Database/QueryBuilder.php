@@ -147,11 +147,11 @@ class QueryBuilder {
                     return "Error : " . $errorInfo[2]; // Returning the error message
                 }
                 if ($this->fetchAll) {
-                    return $statement->fetchAll(PDO::FETCH_ASSOC);
+                    return $statement->fetchAll(PDO::FETCH_OBJ);
                 }
                 else {
                     $this->where = [];
-                    return $statement->fetch(PDO::FETCH_ASSOC);
+                    return $statement->fetch(PDO::FETCH_OBJ);
                 }
             }
         }

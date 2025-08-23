@@ -24,9 +24,23 @@ class AuthController
     {
         // validate request
         $this->validate([
-            'username||required|min:3|max:25',
-            'password||required|min:8',
+            'username||min:3|max:25',
+            'mobile_number||length:11',
         ], $request);
+
+        $findUser = null;
+        
+        if(isset($request->mobile_number)){
+            $findUser = $this->queryBuilder->table('users')
+                ->where('mobile_number', '=', $request->mobile_number)
+                // ->where('password', '=', $request->password)
+                ->get()->execute();
+        } elseif(isset($request->username)){
+            $findUser = $this->queryBuilder->table('users')
+                ->where('username', '=', $request->username)
+                // ->where('password', '=', $request->password)
+                ->get()->execute();
+        }
 
         // get user
         $findUser = $this->queryBuilder->table('users')
@@ -37,7 +51,7 @@ class AuthController
         // Example validation: check if username is 'admin' and password is 'admin123'
         if ($findUser) {
             // Generate JWT token
-            $token = $this->generateToken($request->username, $request->password);
+            $token = $this->generateToken($findUser->username, $findUser->mobile_number);
 
             // Return token as JSON response
             return $this->sendResponse(data: ['token' => $token], message: "با موفقیت وارد شدید");
@@ -60,14 +74,15 @@ class AuthController
 
         $newUser = $this->queryBuilder->table('users')        
             ->insert([
-                'username' => $request->username,
-                'display_name' => $request->display_name ?? NULL,
-                'mobile_number' => $request->mobile_number,
-                'profile_image' => $request->profile_image ?? NULL,
-                'role' => $request->role ?? 'guest',
-                'status' => $request->status ?? 'pending',
-                'created_at' => $request->time(),
-                'updated_at' => $request->time(),
+                // 'username' => $request->username,
+                // 'display_name' => $request->display_name ?? NULL,
+                // 'mobile_number' => $request->mobile_number,
+                // 'profile_image' => $request->profile_image ?? NULL,
+                // 'role' => $request->role ?? 'guest',
+                // 'status' => $request->status ?? 'pending',
+                // 'created_at' => $request->time(),
+                // 'updated_at' => $request->time(),
+                // 'deleted_at' => $request->time(),
             ])->execute();
 
         return $this->sendResponse(data: $newUser, message: "حساب کاربری شما با موفقیت ایجاد شد!");
