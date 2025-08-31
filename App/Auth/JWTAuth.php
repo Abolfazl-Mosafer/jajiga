@@ -7,11 +7,14 @@ use Firebase\JWT\Key;
 trait JWTAuth {
     private $secretKey = 'kvpFWQDecn';
 
-    public function generateToken($username, $password)
+    public function generateToken($id, $username, $mobile_number, $role, $status)
     {
         $payload = [
+            'id' => $id,
             'username' => $username,
-            'password' => $password,
+            'mobile_number' => $mobile_number,
+            'role' => $role,
+            'status' => $status,
             'exp' => time() + 604800 // Token expiration time  (1 Week)
         ];
 
