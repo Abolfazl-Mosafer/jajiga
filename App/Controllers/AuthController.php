@@ -33,22 +33,22 @@ class AuthController
         if(isset($request->mobile_number)){
             $findUser = $this->queryBuilder->table('users')
                 ->where('mobile_number', '=', $request->mobile_number)
-                // ->where('password', '=', $request->password)
+                // ->where('mobile_number', '=', $request->mobile_number)
                 ->get()->execute();
         } elseif(isset($request->username)){
             $findUser = $this->queryBuilder->table('users')
                 ->where('username', '=', $request->username)
-                // ->where('password', '=', $request->password)
+                // ->where('mobile_number', '=', $request->mobile_number)
                 ->get()->execute();
         }
 
         // get user
         $findUser = $this->queryBuilder->table('users')
             ->where('username', '=', $request->username)
-            ->where('password', '=', $request->password)
+            ->where('mobile_number', '=', $request->mobile_number)
             ->get()->execute();
 
-        // Example validation: check if username is 'admin' and password is 'admin123'
+        // Example validation: check if username is 'admin' and mobile_number is 'admin123'
         if ($findUser) {
             // Generate JWT token
             $token = $this->generateToken(

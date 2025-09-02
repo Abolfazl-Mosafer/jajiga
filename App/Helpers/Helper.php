@@ -1,5 +1,8 @@
 <?php
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 if (!function_exists('dd')) {
     /**
      * Dump the passed variables and end the script.
@@ -22,10 +25,20 @@ if (!function_exists('dd')) {
 
 function getPostDataInput()
 {
+    $secretKey = 'kvpFWQDecn';
+
     $jsonData = file_get_contents('php://input');
     $postData = (object)json_decode($jsonData, true);
+
+    $request_token = getTokenFromRequest();
+    $token = $request_token->headers ?? $request_token->query ?? $request_token->body ?? null;
+    $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+    
+    dd($decoded);
+
     return $postData;
 }
+
 function getPath($version = true)
 {
     $requestUri = explode('?', str_replace('/restapi/jajiga/', '', strtolower($_SERVER["REQUEST_URI"])))[0];
@@ -40,4 +53,15 @@ function getApiVersion(){
     $version = $uriParts[0];
 
     return $version;
+}
+
+function getTokenFromRequest(){
+    $jsonData = file_get_contents('php://input');
+    $postData = (object)json_decode($jsonData, true);
+
+    return (object) [
+        "headers" => $_SERVER['HTTP_TOKEN'] ?? null,
+        "query"   => $_GET['token'] ?? null,
+        "body"    => $postData->token ?? null
+    ];
 }

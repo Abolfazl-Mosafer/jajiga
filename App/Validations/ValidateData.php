@@ -16,7 +16,7 @@ trait ValidateData
         $this->queryBuilder = new QueryBuilder();
     }
 
-    public function validate($fields = [], $request){
+    public function validate($fields = [], $request = null){
         if(count($fields)){
             $isError = false;
             $errorsMessages = [];

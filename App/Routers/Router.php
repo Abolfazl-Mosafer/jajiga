@@ -7,6 +7,12 @@ use App\Traits\ResponseTrait;
 class Router {
     use ResponseTrait;
     private $routes = [];
+    private $postData;
+
+    public function __construct()
+    {
+        $this->postData = getPostDataInput();
+    }
 
     public function get($version, $path, $controller, $method) {
         $path = '/' . $version . $path;
@@ -15,14 +21,12 @@ class Router {
 
     public function post($version, $path, $controller, $method) {
         $path = '/' . $version . $path;
-        $postData = getPostDataInput();
-        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $postData, "requestMethod" => "post"];
+        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "post"];
     }
 
     public function put($version, $path, $controller, $method) {
         $path = '/' . $version . $path;
-        $postData = getPostDataInput();
-        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $postData, "requestMethod" => "put"];
+        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "put"];
     }
 
     public function delete($version, $path, $controller, $method) {
