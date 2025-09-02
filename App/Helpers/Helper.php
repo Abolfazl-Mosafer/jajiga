@@ -2,6 +2,7 @@
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Dotenv\Dotenv;
 
 if (!function_exists('dd')) {
     /**
@@ -25,16 +26,29 @@ if (!function_exists('dd')) {
 
 function getPostDataInput()
 {
-    $secretKey = 'kvpFWQDecn';
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+    $dotenv->load();
+    $secretKey = $_ENV['SECRET_KEY'];
 
     $jsonData = file_get_contents('php://input');
     $postData = (object)json_decode($jsonData, true);
 
     $request_token = getTokenFromRequest();
     $token = $request_token->headers ?? $request_token->query ?? $request_token->body ?? null;
-    $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
-    
-    dd($decoded);
+
+    if($token){
+        try {
+            $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+
+            if($decoded){
+            $postData->user_detail = $decoded;
+            }
+            // dd($decoded);
+        } catch (\Exception $e) {
+            // If token is invalid or expired, return false
+            return false;
+        }
+    }
 
     return $postData;
 }

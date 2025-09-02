@@ -3,9 +3,16 @@ namespace App\Auth;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Dotenv\Dotenv;
 
 trait JWTAuth {
-    private $secretKey = 'kvpFWQDecn';
+    private $dotenv;
+
+    public function __construct()
+    {
+        $this->dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+        $this->dotenv->load();
+    }
 
     public function generateToken($id, $username, $mobile_number, $role, $status)
     {
@@ -19,7 +26,7 @@ trait JWTAuth {
         ];
 
         // Generate JWT token
-        $jwt = JWT::encode($payload, $this->secretKey, 'HS256');
+        $jwt = JWT::encode($payload, $_ENV['SECRET_KEY'], 'HS256');
         return $jwt;
     }
 
@@ -27,7 +34,7 @@ trait JWTAuth {
     {
         try {
             // Decode JWT token
-            $decoded = JWT::decode($token, new Key($this->secretKey, 'HS256'));
+            $decoded = JWT::decode($token, new Key($_ENV['SECRET_KEY'], 'HS256'));
 
             // Return decoded payload
             return $decoded;
