@@ -4,7 +4,7 @@ use App\Middlewares\AuthMiddleware;
 
 // use Controllers
 use App\Controllers\AuthController;
-use App\Controllers\WeathersController;
+use App\Controllers\WeatherController;
 
 
 // ایجاد یک نمونه از میدلور
@@ -24,5 +24,5 @@ $router->post('v1','/verify', AuthController::class, 'verify');
 $router->get('v1','/test', AuthController::class, 'test');
 
 // Weathers
-$router->get('v1','/weathers', WeathersController::class, 'index');
-$router->post('v1','/weathers', WeathersController::class, 'store');
+$router->get('v1','/weathers', WeatherController::class, 'index');
+$router->post('v1','/weathers', WeatherController::class, 'store');

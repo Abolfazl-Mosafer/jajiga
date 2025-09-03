@@ -2,24 +2,17 @@
 
 namespace App\Controllers;
 
-use App\Database\QueryBuilder;
-use App\Traits\ResponseTrait;
-use App\Validations\ValidateData;
-use App\Middlewares\CheckAccessMiddleware;
+use App\Controllers\Controller;
 
-class WeathersController
+class WeatherController extends Controller
 {
-    use ResponseTrait;
-
-    protected $queryBuilder;
-    protected $Access;
     private $roles;
 
     public function __construct()
     {
-        $this->queryBuilder = new QueryBuilder();
-        $this->Access       = new CheckAccessMiddleware();
-        $this->roles = ["admin", "support"];
+        parent::__construct();
+
+        $this->roles = ["guest"];
 
         $this->Access->checkAccess($this->roles);
     }
