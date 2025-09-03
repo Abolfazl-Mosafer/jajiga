@@ -25,6 +25,17 @@ class WeatherController extends Controller
 
     public function store($request)
     {
-        dd("OK");
+        $this->validate([
+            'title||required|min:3|max:50'
+        ], $request);
+
+        $newWeathers = $this->queryBuilder->table('weathers')
+            ->insert([
+                'title' => $request->title,
+                'created_at' => time(),
+                'updated_at' => time()
+            ])->execute();
+
+        return $this->sendResponse(data: $newWeathers, message: "آب و هوای جدید با موفقیت افزوده شد.");
     }
 }

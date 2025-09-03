@@ -10,6 +10,7 @@ function translate_key($input){
         "mobile_number" => "شماره موبایل",
         "display_name" => "نام مستعار",
         "role" => "نقش کاربر",
+        "title" => "عنوان",
     ];
 
     $isFind = false;
