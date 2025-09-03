@@ -25,4 +25,5 @@ $router->get('v1','/test', AuthController::class, 'test');
 
 // Weathers
 $router->get('v1','/weathers', WeatherController::class, 'index');
+$router->get('v1','/weathers/{id}', WeatherController::class, 'get');
 $router->post('v1','/weathers', WeatherController::class, 'store');

@@ -23,6 +23,15 @@ class WeatherController extends Controller
         return $this->sendResponse(data: $weathers, message: "لیست آب و هوا ها با موفقیت گرفته شد.");
     }
 
+    public function get($id)
+    {
+        $weather = $this->queryBuilder->table('weathers')
+        ->where(value: $id)->get()->execute();
+
+        if(!$weather) return $this->sendResponse(data: $weather, message: "آب و هوا پیدا نشد.", error: true, status: HTTP_BadREQUEST); 
+        return $this->sendResponse(data: $weather, message: "آب و هوا با موفقیت گرفته شد.");
+    }
+
     public function store($request)
     {
         $this->validate([

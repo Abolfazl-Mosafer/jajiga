@@ -43,7 +43,7 @@ class QueryBuilder {
         return $this;
     }
 
-    public function where($column, $operator, $value) {
+    public function where($column = 'id', $operator = '=', $value = '1') {
         $this->where[] = "$column $operator '$value'";
         return $this;
     }
