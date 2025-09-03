@@ -4,6 +4,7 @@ use App\Middlewares\AuthMiddleware;
 
 // use Controllers
 use App\Controllers\AuthController;
+use App\Controllers\DestinationController;
 use App\Controllers\WeatherController;
 
 
@@ -29,3 +30,6 @@ $router->get('v1','/weathers/{id}', WeatherController::class, 'get');
 $router->post('v1','/weathers', WeatherController::class, 'store');
 $router->put('v1','/weathers/{id}', WeatherController::class, 'update');
 $router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy');
+
+// Destinations
+$router->get('v1','/destinations', DestinationController::class, 'index');

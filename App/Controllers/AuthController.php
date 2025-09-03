@@ -77,10 +77,10 @@ class AuthController extends Controller
                 'display_name' => $request->display_name ?? NULL,
                 'mobile_number' => $request->mobile_number,
                 'profile_image' => $request->profile_image ?? NULL,
-                'role' => $request->role ?? 'guest',
+                'role' => $request->role ?? 'admin',
                 'status' => $request->status ?? 'pending',
-                'created_at' => $request->time(),
-                'updated_at' => $request->time(),
+                'created_at' => time(),
+                'updated_at' => time(),
             ])->execute();
 
         return $this->sendResponse(data: $newUser, message: "حساب کاربری شما با موفقیت ایجاد شد!");

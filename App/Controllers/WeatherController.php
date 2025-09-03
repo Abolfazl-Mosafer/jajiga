@@ -12,8 +12,7 @@ class WeatherController extends Controller
     {
         parent::__construct();
 
-        $this->roles = ["guest"];
-
+        $this->roles = ["admin", "support"];
         $this->Access->checkAccess($this->roles);
     }
 
