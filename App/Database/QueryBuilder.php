@@ -127,7 +127,7 @@ class QueryBuilder {
                 $sql .= " $join";
             }
 
-            // $this->where[] = "deleted_at IS NULL";
+            $this->where[] = "deleted_at IS NULL";
             if (!empty($this->where)) {
                 $sql .= ' WHERE ' . implode(' AND ', $this->where);
             }

@@ -33,4 +33,7 @@ $router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy');
 
 // Destinations
 $router->get('v1','/destinations', DestinationController::class, 'index');
+$router->get('v1','/destinations/{id}', DestinationController::class, 'get');
 $router->post('v1','/destinations', DestinationController::class, 'store');
+$router->put('v1','/destinations/{id}', DestinationController::class, 'update');
+$router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy');
