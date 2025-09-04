@@ -41,3 +41,4 @@ $router->delete('v1','/destinations/{id}', DestinationController::class, 'destro
 
 // Rooms
 $router->get('v1','/rooms', RoomController::class, 'index', ["host","support","admin"]);
+$router->post('v1','/rooms', RoomController::class, 'store', ["host","support","admin"]);

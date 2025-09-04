@@ -11,6 +11,8 @@ function translate_key($input){
         "display_name" => "نام مستعار",
         "role" => "نقش کاربر",
         "title" => "عنوان",
+        "host_id" => "آیدی میزبان",
+        "capacity" => "ظرفیت",
     ];
 
     $isFind = false;
