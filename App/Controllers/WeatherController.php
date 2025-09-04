@@ -11,9 +11,6 @@ class WeatherController extends Controller
     public function __construct()
     {
         parent::__construct();
-
-        $this->roles = ["admin", "support"];
-        $this->Access->checkAccess($this->roles);
     }
 
     public function index()

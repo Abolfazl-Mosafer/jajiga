@@ -16,9 +16,6 @@ class RoomController extends Controller
 
     public function index()
     {
-        $this->roles = ["host", "admin"];
-        $this->Access->checkAccess($this->roles);
-
         $rooms = $this->queryBuilder->table('rooms')->getAll()->execute();
 
         return $this->sendResponse(data: $rooms, message: "لیست اتاق ها با موفقیت دریافت شد");

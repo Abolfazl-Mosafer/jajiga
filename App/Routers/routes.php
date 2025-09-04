@@ -26,18 +26,18 @@ $router->post('v1','/verify', AuthController::class, 'verify');
 $router->get('v1','/test', AuthController::class, 'test');
 
 // Weathers
-$router->get('v1','/weathers', WeatherController::class, 'index');
-$router->get('v1','/weathers/{id}', WeatherController::class, 'get');
-$router->post('v1','/weathers', WeatherController::class, 'store');
-$router->put('v1','/weathers/{id}', WeatherController::class, 'update');
-$router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy');
+$router->get('v1','/weathers', WeatherController::class, 'index', ["support","admin"]);
+$router->get('v1','/weathers/{id}', WeatherController::class, 'get', ["support","admin"]);
+$router->post('v1','/weathers', WeatherController::class, 'store', ["support","admin"]);
+$router->put('v1','/weathers/{id}', WeatherController::class, 'update', ["support","admin"]);
+$router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy', ["support","admin"]);
 
 // Destinations
-$router->get('v1','/destinations', DestinationController::class, 'index');
-$router->get('v1','/destinations/{id}', DestinationController::class, 'get');
-$router->post('v1','/destinations', DestinationController::class, 'store');
-$router->put('v1','/destinations/{id}', DestinationController::class, 'update');
-$router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy');
+$router->get('v1','/destinations', DestinationController::class, 'index', ["support","admin"]);
+$router->get('v1','/destinations/{id}', DestinationController::class, 'get', ["support","admin"]);
+$router->post('v1','/destinations', DestinationController::class, 'store', ["support","admin"]);
+$router->put('v1','/destinations/{id}', DestinationController::class, 'update', ["support","admin"]);
+$router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy', ["support","admin"]);
 
 // Rooms
-$router->get('v1','/rooms', RoomController::class, 'index');
+$router->get('v1','/rooms', RoomController::class, 'index', ["host","support","admin"]);

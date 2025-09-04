@@ -77,7 +77,7 @@ class AuthController extends Controller
                 'display_name' => $request->display_name ?? NULL,
                 'mobile_number' => $request->mobile_number,
                 'profile_image' => $request->profile_image ?? NULL,
-                'role' => $request->role ?? 'admin',
+                'role' => $request->role ?? 'guest',
                 'status' => $request->status ?? 'pending',
                 'created_at' => time(),
                 'updated_at' => time(),

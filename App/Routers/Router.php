@@ -3,35 +3,38 @@
 namespace App\Routers;
 
 use App\Traits\ResponseTrait;
+use App\Middlewares\CheckAccessMiddleware;
 
 class Router {
     use ResponseTrait;
     private $routes = [];
     private $postData;
+    private $access;
 
     public function __construct()
     {
         $this->postData = getPostDataInput();
+        $this->access = new CheckAccessMiddleware();
     }
 
-    public function get($version, $path, $controller, $method) {
+    public function get($version, $path, $controller, $method, $access=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "get"];
+        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "get", "access" => $access];
     }
 
-    public function post($version, $path, $controller, $method) {
+    public function post($version, $path, $controller, $method, $access=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "post"];
+        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "post", "access" => $access];
     }
 
-    public function put($version, $path, $controller, $method) {
+    public function put($version, $path, $controller, $method, $access=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "put"];
+        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "put", "access" => $access];
     }
 
-    public function delete($version, $path, $controller, $method) {
+    public function delete($version, $path, $controller, $method, $access=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['DELETE'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "delete"];
+        $this->routes[$version]['DELETE'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "delete", "access" => $access];
     }
 
     public function resolve($version, $requestMethod, $path) {
@@ -57,6 +60,8 @@ class Router {
             $method = $matchedRoute['method'];
             $requestMethod = $matchedRoute['requestMethod'];
             $request = $matchedRoute['request'];
+            $access = $matchedRoute['access'];
+            if($access) $this->access->checkAccess($access);
 
             $controllerInstance = new $controller();
             if (isset($matches) && count($matches) && $requestMethod != "put") {
