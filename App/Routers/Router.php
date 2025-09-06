@@ -17,24 +17,24 @@ class Router {
         $this->access = new CheckAccessMiddleware();
     }
 
-    public function get($version, $path, $controller, $method, $access=false) {
+    public function get($version, $path, $controller, $method, $access=false, $inaccess=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "get", "access" => $access];
+        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "get", "access" => $access, "inaccess" => $inaccess];
     }
 
-    public function post($version, $path, $controller, $method, $access=false) {
+    public function post($version, $path, $controller, $method, $access=false, $inaccess=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "post", "access" => $access];
+        $this->routes[$version]['POST'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "post", "access" => $access, "inaccess" => $inaccess];
     }
 
-    public function put($version, $path, $controller, $method, $access=false) {
+    public function put($version, $path, $controller, $method, $access=false, $inaccess=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "put", "access" => $access];
+        $this->routes[$version]['PUT'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "put", "access" => $access, "inaccess" => $inaccess];
     }
 
-    public function delete($version, $path, $controller, $method, $access=false) {
+    public function delete($version, $path, $controller, $method, $access=false, $inaccess=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['DELETE'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "delete", "access" => $access];
+        $this->routes[$version]['DELETE'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "delete", "access" => $access, "inaccess" => $inaccess];
     }
 
     public function resolve($version, $requestMethod, $path) {
@@ -61,7 +61,13 @@ class Router {
             $requestMethod = $matchedRoute['requestMethod'];
             $request = $matchedRoute['request'];
             $access = $matchedRoute['access'];
-            if($access) $this->access->checkAccess($access);
+            $inaccess = $matchedRoute['inaccess'];
+
+            if($access){
+                if($access == "owners") $this->access->checkAccess(["support", "admin"]);
+                else $this->access->checkAccess($access);
+            }
+            elseif($inaccess) $this->access->checkAccess($inaccess, false);
 
             $controllerInstance = new $controller();
             if (isset($matches) && count($matches) && $requestMethod != "put") {

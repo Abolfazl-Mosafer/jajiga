@@ -26,19 +26,19 @@ $router->post('v1','/verify', AuthController::class, 'verify');
 $router->get('v1','/test', AuthController::class, 'test');
 
 // Weathers
-$router->get('v1','/weathers', WeatherController::class, 'index', ["support","admin"]);
-$router->get('v1','/weathers/{id}', WeatherController::class, 'get', ["support","admin"]);
-$router->post('v1','/weathers', WeatherController::class, 'store', ["support","admin"]);
-$router->put('v1','/weathers/{id}', WeatherController::class, 'update', ["support","admin"]);
-$router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy', ["support","admin"]);
+$router->get('v1','/weathers', WeatherController::class, 'index', "owners");
+$router->get('v1','/weathers/{id}', WeatherController::class, 'get', "owners");
+$router->post('v1','/weathers', WeatherController::class, 'store', "owners");
+$router->put('v1','/weathers/{id}', WeatherController::class, 'update', "owners");
+$router->delete('v1','/weathers/{id}', WeatherController::class, 'destroy', "owners");
 
 // Destinations
-$router->get('v1','/destinations', DestinationController::class, 'index', ["support","admin"]);
-$router->get('v1','/destinations/{id}', DestinationController::class, 'get', ["support","admin"]);
-$router->post('v1','/destinations', DestinationController::class, 'store', ["support","admin"]);
-$router->put('v1','/destinations/{id}', DestinationController::class, 'update', ["support","admin"]);
-$router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy', ["support","admin"]);
+$router->get('v1','/destinations', DestinationController::class, 'index', "owners");
+$router->get('v1','/destinations/{id}', DestinationController::class, 'get', "owners");
+$router->post('v1','/destinations', DestinationController::class, 'store', "owners");
+$router->put('v1','/destinations/{id}', DestinationController::class, 'update', "owners");
+$router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy', "owners");
 
 // Rooms
-$router->get('v1','/rooms', RoomController::class, 'index', ["host","support","admin"]);
-$router->post('v1','/rooms', RoomController::class, 'store', ["host","support","admin"]);
+$router->get('v1','/rooms', RoomController::class, 'index', inaccess:['guest']);
+$router->post('v1','/rooms', RoomController::class, 'store', inaccess:['guest']);
