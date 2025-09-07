@@ -40,7 +40,7 @@ class RoomController extends Controller
         ], $request);
 
         if($request->user_detail->role == "host") $request->host_id = $request->user_detail->id;
-
+        
         $getHost = $this->queryBuilder->table('users')
             ->where('id', '=', $request->host_id)
             ->where('role', '=', 'host')->get()->execute();
@@ -58,5 +58,26 @@ class RoomController extends Controller
             ])->execute();
 
         return $this->sendResponse(data: $newRoom, message: "اتاق شما با موفقیت ساخته شد");
+    }
+
+    public function update($id, $request)
+    {
+        $this->validate([
+            'title||required|string|min:5',
+            'room_detail||string',
+            'capacity||required|number',
+            'addition_capacity||number',
+        ], $request);
+
+        $updateRoom = $this->queryBuilder->table('rooms')
+            ->update([
+                'title' => $request->title,
+                'room_detail' => $request->room_detail,
+                'capacity' => $request->capacity,
+                'addition_capacity' => $request->addition_capacity ?? NULL,
+                'updated_at' => time()
+            ])->where(value: $id)->execute();
+
+        return $this->sendResponse(data: $updateRoom, message: "اتاق شما با موفقیت ویرایش شد");
     }
 }
