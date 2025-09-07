@@ -80,4 +80,14 @@ class RoomController extends Controller
 
         return $this->sendResponse(data: $updateRoom, message: "اتاق شما با موفقیت ویرایش شد");
     }
+
+    public function destroy($id)
+    {
+            $deletedRoom = $this->queryBuilder->table('rooms')
+            ->update([
+                'deleted_at' => time()
+            ])->where(value: $id)->execute();
+
+        return $this->sendResponse(data: $deletedRoom, message: "اتاق با موفقیت حذف شد");
+    }
 }

@@ -44,3 +44,4 @@ $router->get('v1','/rooms', RoomController::class, 'index');
 $router->get('v1','/rooms/{id}', RoomController::class, 'get');
 $router->post('v1','/rooms', RoomController::class, 'store', inaccess:'guest');
 $router->put('v1','/rooms/{id}', RoomController::class, 'update', inaccess:'guest');
+$router->delete('v1','/rooms/{id}', RoomController::class, 'destroy', "owners");
