@@ -20,6 +20,13 @@ class RoomController extends Controller
         return $this->sendResponse(data: $rooms, message: "لیست اتاق ها با موفقیت دریافت شد");
     }
 
+    public function get($id)
+    {
+        $room = $this->queryBuilder->table('rooms')
+            ->where(value: $id)->get()->execute();
+        return $this->sendResponse(data: $room, message: "اتاق شما با موفقیت دریافت شد");
+    }
+
     public function store($request)
     {
         $this->validate([

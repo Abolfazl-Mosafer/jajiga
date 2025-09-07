@@ -60,14 +60,24 @@ class Router {
             $method = $matchedRoute['method'];
             $requestMethod = $matchedRoute['requestMethod'];
             $request = $matchedRoute['request'];
+
             $access = $matchedRoute['access'];
+            $accessRole = [];
+
             $inaccess = $matchedRoute['inaccess'];
+            $inaccessRole = [];
+
+            if(is_array($inaccess)) $inaccessRole = $inaccess;
+            else array_push($inaccessRole, $inaccess);
+
+            if(is_array($access)) $accessRole = $access;
+            else array_push($accessRole, $access);
 
             if($access){
                 if($access == "owners") $this->access->checkAccess(["support", "admin"]);
-                else $this->access->checkAccess($access);
+                else $this->access->checkAccess($accessRole);
             }
-            elseif($inaccess) $this->access->checkAccess($inaccess, false);
+            elseif($inaccess) $this->access->checkAccess($inaccessRole, false);
 
             $controllerInstance = new $controller();
             if (isset($matches) && count($matches) && $requestMethod != "put") {

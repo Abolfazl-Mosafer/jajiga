@@ -40,5 +40,6 @@ $router->put('v1','/destinations/{id}', DestinationController::class, 'update', 
 $router->delete('v1','/destinations/{id}', DestinationController::class, 'destroy', "owners");
 
 // Rooms
-$router->get('v1','/rooms', RoomController::class, 'index', inaccess:['guest']);
-$router->post('v1','/rooms', RoomController::class, 'store', inaccess:['guest']);
+$router->get('v1','/rooms', RoomController::class, 'index');
+$router->get('v1','/rooms/{id}', RoomController::class, 'get');
+$router->post('v1','/rooms', RoomController::class, 'store', inaccess:'admin');
