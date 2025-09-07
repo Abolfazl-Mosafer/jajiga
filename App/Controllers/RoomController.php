@@ -24,6 +24,8 @@ class RoomController extends Controller
     {
         $room = $this->queryBuilder->table('rooms')
             ->where(value: $id)->get()->execute();
+
+        if(!$room) return $this->sendResponse(message: "اتاق شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
         return $this->sendResponse(data: $room, message: "اتاق شما با موفقیت دریافت شد");
     }
 
