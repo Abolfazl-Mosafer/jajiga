@@ -104,7 +104,7 @@ class RoomController extends Controller
 
         // Check Feature
         $getFeature = $this->queryBuilder->table('features')->where(value: $request->feature_id)->get()->execute();
-        if(!$getRoom) return $this->sendResponse(message: "ویژگی شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
+        if(!$getFeature) return $this->sendResponse(message: "ویژگی شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
 
         $appendFeature = $this->queryBuilder->table('room_feature')
             ->insert([
