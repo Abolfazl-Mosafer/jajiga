@@ -90,4 +90,45 @@ class RoomController extends Controller
 
         return $this->sendResponse(data: $deletedRoom, message: "اتاق با موفقیت حذف شد");
     }
+
+    public function append_feature($request)
+    {
+        $this->validate([
+            'room_id||required|number',
+            'feature_id||required|number',
+        ], $request);
+
+        // Check Room
+        $getRoom = $this->queryBuilder->table('rooms')->where(value: $request->room_id)->get()->execute();
+        if(!$getRoom) return $this->sendResponse(message: "اتاق شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
+
+        // Check Feature
+        $getFeature = $this->queryBuilder->table('features')->where(value: $request->feature_id)->get()->execute();
+        if(!$getRoom) return $this->sendResponse(message: "ویژگی شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
+
+        $appendFeature = $this->queryBuilder->table('room_feature')
+            ->insert([
+                'room_id' => $request->room_id,
+                'feature_id' => $request->feature_id,
+                'created_at' => time()
+            ])->execute();
+
+        return $this->sendResponse(data: $appendFeature, message: "ویژگی مورد نظر به اتاق شما اضافه شد");
+    }
+
+    public function add_feature($request)
+    {
+        $this->validate([
+            'title||required|string',
+        ], $request);
+
+        $addFeature = $this->queryBuilder->table('features')
+            ->insert([
+                'title' => $request->title,
+                'created_at' => time(),
+                'updated_at' => time()
+            ])->execute();
+
+        return $this->sendResponse(data: $addFeature, message: "ویژگی شما اضافه شد");
+    }
 }
