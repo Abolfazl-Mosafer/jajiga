@@ -28,7 +28,13 @@ class RoomController extends Controller
     public function get($id)
     {
         $room = $this->queryBuilder->table('rooms')
-            ->where(value: $id)->get()->execute();
+            ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features'])
+            ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
+            ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
+            ->groupBy('rooms.id')
+            ->where(column: 'rooms.id', value: $id)->get()->execute();
+            
+        $room->features = explode(',', $room->features);
 
         if(!$room) return $this->sendResponse(message: "اتاق شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
         return $this->sendResponse(data: $room, message: "اتاق شما با موفقیت دریافت شد");
