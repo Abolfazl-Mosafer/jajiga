@@ -17,9 +17,11 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = $this->queryBuilder->table('rooms')
-        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features'])
+        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather'])
         ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
         ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
+        ->join('destinations', 'rooms.destination_id', '=', 'destinations.id', 'LEFT')
+        ->join('weathers', 'destinations.weather_id', '=', 'weathers.id', 'LEFT')
         ->groupBy('rooms.id')
         ->getAll()->execute();
         return $this->sendResponse(data: $rooms, message: "لیست اتاق ها با موفقیت دریافت شد");
@@ -28,12 +30,14 @@ class RoomController extends Controller
     public function get($id)
     {
         $room = $this->queryBuilder->table('rooms')
-            ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features'])
+            ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather'])
             ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
             ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
+            ->join('destinations', 'rooms.destination_id', '=', 'destinations.id', 'LEFT')
+            ->join('weathers', 'destinations.weather_id', '=', 'weathers.id', 'LEFT')
             ->groupBy('rooms.id')
             ->where(column: 'rooms.id', value: $id)->get()->execute();
-            
+
         $room->features = explode(',', $room->features);
 
         if(!$room) return $this->sendResponse(message: "اتاق شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
@@ -44,6 +48,7 @@ class RoomController extends Controller
     {
         $this->validate([
             'host_id||number',
+            'destination_id||number',
             'title||required|string|min:5',
             'room_detail||string',
             'capacity||required|number',
@@ -60,6 +65,7 @@ class RoomController extends Controller
         $newRoom = $this->queryBuilder->table('rooms')
             ->insert([
                 'host_id' => $request->host_id,
+                'destination_id' => $request->destination_id,
                 'title' => $request->title,
                 'room_detail' => $request->room_detail,
                 'capacity' => $request->capacity,
