@@ -45,6 +45,7 @@ $router->get('v1','/rooms/{id}', RoomController::class, 'get');
 $router->post('v1','/rooms', RoomController::class, 'store', inaccess:'guest');
 $router->put('v1','/rooms/{id}', RoomController::class, 'update', inaccess:'guest');
 $router->delete('v1','/rooms/{id}', RoomController::class, 'destroy', "owners");
+$router->post('v1','/rooms/like', RoomController::class, 'room_like');
 
 // Features
 $router->post('v1','/rooms/feature', RoomController::class, 'add_feature', inaccess:'guest');
