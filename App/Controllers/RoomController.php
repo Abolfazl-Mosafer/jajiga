@@ -16,7 +16,12 @@ class RoomController extends Controller
 
     public function index()
     {
-        $rooms = $this->queryBuilder->table('rooms')->getAll()->execute();
+        $rooms = $this->queryBuilder->table('rooms')
+        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features'])
+        ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
+        ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
+        ->groupBy('rooms.id')
+        ->getAll()->execute();
         return $this->sendResponse(data: $rooms, message: "لیست اتاق ها با موفقیت دریافت شد");
     }
 

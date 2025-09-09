@@ -11,6 +11,7 @@ class QueryBuilder {
     protected $joins = [];
     protected $where = [];
     protected $orderBy;
+    protected $groupBy;
     protected $limit;
     protected $insertValues = [];
     protected $updateValues = [];
@@ -50,6 +51,11 @@ class QueryBuilder {
 
     public function orderBy($column, $direction = 'ASC') {
         $this->orderBy = "$column $direction";
+        return $this;
+    }
+
+    public function groupBy($column) {
+        $this->groupBy = "$column";
         return $this;
     }
 
@@ -127,9 +133,13 @@ class QueryBuilder {
                 $sql .= " $join";
             }
 
-            $this->where[] = "deleted_at IS NULL";
+            $this->where[] = "$this->table.deleted_at IS NULL";
             if (!empty($this->where)) {
                 $sql .= ' WHERE ' . implode(' AND ', $this->where);
+            }
+
+            if ($this->groupBy) {
+                $sql .= " GROUP BY $this->groupBy";
             }
 
             if ($this->orderBy) {
