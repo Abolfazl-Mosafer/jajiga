@@ -39,8 +39,10 @@ class QueryBuilder {
         return $this;
     }
 
-    public function join($table, $first, $operator, $second, $type = 'INNER') {
-        $this->joins[] = "$type JOIN $table ON $first $operator $second";
+    public function join($table, $first, $operator, $second, $type = 'INNER', $secondOn=false) {
+        $join = "$type JOIN $table ON $first $operator $second";
+        if(!$secondOn) $this->joins[] = $join;
+        else $this->joins[] = ($join. " AND $secondOn[0] = $secondOn[1]");
         return $this;
     }
 

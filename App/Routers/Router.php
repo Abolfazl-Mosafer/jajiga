@@ -19,7 +19,7 @@ class Router {
 
     public function get($version, $path, $controller, $method, $access=false, $inaccess=false) {
         $path = '/' . $version . $path;
-        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => '', "requestMethod" => "get", "access" => $access, "inaccess" => $inaccess];
+        $this->routes[$version]['GET'][$path] = ['controller' => $controller, 'method' => $method, 'request' => $this->postData, "requestMethod" => "get", "access" => $access, "inaccess" => $inaccess];
     }
 
     public function post($version, $path, $controller, $method, $access=false, $inaccess=false) {
@@ -68,6 +68,7 @@ class Router {
             $inaccessRole = [];
 
             if(is_array($inaccess)) $inaccessRole = $inaccess;
+            elseif(!$inaccess) $inaccessRole = false;
             else array_push($inaccessRole, $inaccess);
 
             if(is_array($access)) $accessRole = $access;
@@ -81,11 +82,12 @@ class Router {
 
             $controllerInstance = new $controller();
             if (isset($matches) && count($matches) && $requestMethod != "put") {
-                $controllerInstance->$method($matches["id"]);
+                if($requestMethod == 'get') $controllerInstance->$method($matches["id"], $request);
+                else $controllerInstance->$method($matches["id"]);
             } else {
                 if($requestMethod == 'post') $controllerInstance->$method($request);
                 else if($requestMethod == 'put' && isset($matches)) $controllerInstance->$method($matches["id"], $request);
-                else $controllerInstance->$method();
+                else $controllerInstance->$method($request);
             }
             exit();
         } else {

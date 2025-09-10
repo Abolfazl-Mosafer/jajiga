@@ -14,28 +14,30 @@ class RoomController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index($request)
     {
         $rooms = $this->queryBuilder->table('rooms')
-        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather'])
+        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather', 'IF(room_like.id IS NULL,0,1) as liked'])
         ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
         ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
         ->join('destinations', 'rooms.destination_id', '=', 'destinations.id', 'LEFT')
         ->join('weathers', 'destinations.weather_id', '=', 'weathers.id', 'LEFT')
-        ->groupBy('rooms.id')
+        ->join('room_like', 'room_like.room_id', '=', 'rooms.id', 'LEFT', ['room_like.user_id', $request->user_detail->id ?? 0])
+        ->groupBy('rooms.id, room_like.id')
         ->getAll()->execute();
         return $this->sendResponse(data: $rooms, message: "لیست اتاق ها با موفقیت دریافت شد");
     }
 
-    public function get($id)
+    public function get($id, $request)
     {
         $room = $this->queryBuilder->table('rooms')
-            ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather'])
+            ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather', 'IF(room_like.id IS NULL,0,1) as liked'])
             ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
             ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
             ->join('destinations', 'rooms.destination_id', '=', 'destinations.id', 'LEFT')
             ->join('weathers', 'destinations.weather_id', '=', 'weathers.id', 'LEFT')
-            ->groupBy('rooms.id')
+            ->join('room_like', 'room_like.room_id', '=', 'rooms.id', 'LEFT', ['room_like.user_id', $request->user_detail->id ?? 0])
+            ->groupBy('rooms.id, room_like.id')
             ->where(column: 'rooms.id', value: $id)->get()->execute();
 
         $room->features = explode(',', $room->features);
