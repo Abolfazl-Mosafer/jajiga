@@ -192,6 +192,22 @@ class RoomController extends Controller
             'status||enum:pending,payed,cancel,reject'
         ], $request);
 
+        // Calculate entry time
+        $entry_date = explode('/', $request->entry_date);
+        $entry_year = $entry_date[0];
+        $entry_month = $entry_date[1];
+        $entry_day = $entry_date[2];
+        $entry_timestamp = jmktime('14', '00', '00', $entry_month, $entry_day, $entry_year);
+        $request->entry_timestamp = $entry_timestamp;
+
+        // Calculate exit time
+        $exit_date = explode('/', $request->exit_date);
+        $exit_year = $exit_date[0];
+        $exit_month = $exit_date[1];
+        $exit_day = $exit_date[2];
+        $exit_timestamp = jmktime('12', '00', '00', $exit_month, $exit_day, $exit_year);
+        $request->exit_timestamp = $exit_timestamp;
+
         $userDetail = $request->user_detail;
         if($userDetail->role == "guest" || $userDetail->role == "host") $request->user_id = $userDetail->id;
 
@@ -203,7 +219,7 @@ class RoomController extends Controller
                 'entry_timestamp' => $request->entry_timestamp,
                 'exit_date' => $request->exit_date,
                 'exit_timestamp' => $request->exit_timestamp,
-                'status' => $request->status,
+                'status' => $request->status ?? "pending",
                 'created_at' => time(),
                 'updated_at' => time()
             ])->execute();

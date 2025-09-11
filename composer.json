@@ -10,7 +10,8 @@
     "files": [
       "App/Helpers/Helper.php",
       "App/Helpers/Http_status_code.php",
-      "App/Helpers/Translate.php"
+      "App/Helpers/Translate.php",
+      "App/Helpers/jdf.php"
     ]
   },
   "require": {
