@@ -12,53 +12,47 @@ class AuthController extends Controller
     {
         parent::__construct();
     }
+public function login($request)
+{
+    $this->validate([
+        'username||min:3|max:25',
+        'mobile_number||length:11',
+    ], $request);
 
-    public function login($request)
-    {
-        // validate request
-        $this->validate([
-            'username||min:3|max:25',
-            'mobile_number||length:11',
-        ], $request);
+    // Build query dynamically
+    $query = $this->queryBuilder->table('users');
 
-        $findUser = null;
-        
-        if(isset($request->mobile_number)){
-            $findUser = $this->queryBuilder->table('users')
-                ->where('mobile_number', '=', $request->mobile_number)
-                // ->where('mobile_number', '=', $request->mobile_number)
-                ->get()->execute();
-        } elseif(isset($request->username)){
-            $findUser = $this->queryBuilder->table('users')
-                ->where('username', '=', $request->username)
-                // ->where('mobile_number', '=', $request->mobile_number)
-                ->get()->execute();
-        }
-
-        // get user
-        $findUser = $this->queryBuilder->table('users')
-            ->where('username', '=', $request->username)
-            ->where('mobile_number', '=', $request->mobile_number)
-            ->get()->execute();
-
-        // Example validation: check if username is 'admin' and mobile_number is 'admin123'
-        if ($findUser) {
-            // Generate JWT token
-            $token = $this->generateToken(
-                $findUser->id,
-                $findUser->username,
-                $findUser->mobile_number,
-                $findUser->role,
-                $findUser->status
-            );
-
-            // Return token as JSON response
-            return $this->sendResponse(data: ['token' => $token], message: "با موفقیت وارد شدید");
-        } else {
-            // If credentials are not valid, return error response
-            return $this->sendResponse(message: "نام کاربری یا رمز عبور شما صحیح نیست!", error: true, status:  HTTP_Unauthorized);
-        }
+    if (isset($request->username)) {
+        $query->where('username', '=', $request->username);
     }
+
+    if (isset($request->mobile_number)) {
+        $query->where('mobile_number', '=', $request->mobile_number);
+    }
+
+    $findUser = $query->get()->execute();
+
+    // Check if user exists
+    if (!$findUser) {
+        return $this->sendResponse(
+            message: "نام کاربری یا رمز عبور شما صحیح نیست!",
+            error: true,
+            status: HTTP_Unauthorized
+        );
+    }
+
+    // Generate JWT token
+    $token = $this->generateToken(
+        $findUser->id,
+        $findUser->username,
+        $findUser->mobile_number,
+        $findUser->role,
+        $findUser->status
+    );
+
+    return $this->sendResponse(data: ['token' => $token], message: "با موفقیت وارد شدید");
+}
+
 
     public function register($request){
         // validate request

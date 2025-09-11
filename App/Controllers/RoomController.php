@@ -209,7 +209,10 @@ class RoomController extends Controller
         $request->exit_timestamp = $exit_timestamp;
 
         $userDetail = $request->user_detail;
-        if($userDetail->role == "guest" || $userDetail->role == "host") $request->user_id = $userDetail->id;
+        if($userDetail->role == "guest" || $userDetail->role == "host") {
+            $request->user_id = $userDetail->id;
+            $request->status = "pending";
+        }
 
         $reservRoom = $this->queryBuilder->table('reserves')
             ->insert([
