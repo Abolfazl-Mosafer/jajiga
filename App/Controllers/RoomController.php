@@ -181,4 +181,33 @@ class RoomController extends Controller
             return $this->sendResponse(data: $likeRoom, message: "پست مدنظر با موفقیت لایک شد");
         }
     }
+
+    public function room_reserve($request)
+    {
+        $this->validate([
+            'user_id||numer',
+            'room_id||required|number',
+            'entry_date||required|string',
+            'exit_date||required|string',
+            'status||enum:pending,payed,cancel,reject'
+        ], $request);
+
+        $userDetail = $request->user_detail;
+        if($userDetail->role == "guest" || $userDetail->role == "host") $request->user_id = $userDetail->id;
+
+        $reservRoom = $this->queryBuilder->table('reserves')
+            ->insert([
+                'user_id' => $request->user_id,
+                'room_id' => $request->room_id,
+                'entry_date' => $request->entry_date,
+                'entry_timestamp' => $request->entry_timestamp,
+                'exit_date' => $request->exit_date,
+                'exit_timestamp' => $request->exit_timestamp,
+                'status' => $request->status,
+                'created_at' => time(),
+                'updated_at' => time()
+            ])->execute();
+
+        return $this->sendResponse(data: $reservRoom, message: "اتاق مورد نظر شما با موفقیت رزرو شد");
+    }
 }
