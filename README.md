@@ -16,7 +16,7 @@
 ### Rooms
 - Add, update, and delete rooms
 - Add and remove room features (e.g., WiFi, Air Conditioning, Balcony)
-- Update room details including price, availability, and capacity
+- Update room details including price and capacity
 - Book rooms
 - Like and dislike rooms
 
