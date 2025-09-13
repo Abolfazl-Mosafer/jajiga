@@ -1,31 +1,31 @@
-# Jajiga API
+# 🌟 Jajiga API 🌟
 
-**Jajiga** is a PHP-based API for managing accommodation bookings. It provides all essential features to handle users, destinations, weather, and rooms efficiently.
+**Jajiga** is a PHP-based API for managing accommodation bookings. It provides all essential features to handle users, destinations, weather, and rooms efficiently. 🏨✨
 
-## Features
+## Features 🛠️
 
-### Users
-- Register and login
+### Users 👤
+- Register and login 🔑
 
-### Weather
-- Add, update, and delete weather information
+### Weather 🌤️
+- Add, update, and delete weather information ☀️🌧️
 
-### Destinations
-- Add, update, and delete destinations
+### Destinations 🗺️
+- Add, update, and delete destinations ✈️🏖️
 
-### Rooms
-- Add, update, and delete rooms
-- Add and remove room features (e.g., WiFi, Air Conditioning, Balcony)
-- Update room details including price and capacity
-- Book rooms
-- Like and dislike rooms
+### Rooms 🛏️
+- Add, update, and delete rooms 🏠
+- Add and remove room features (e.g., WiFi, Air Conditioning, Balcony) 📶❄️🌇
+- Update room details including price and capacity 💰👥
+- Book rooms 📅✅
+- Like and dislike rooms 👍👎
 
-## Technical Notes
-- Built with PHP
-- Full CRUD operations for users, weather, destinations, and rooms
-- Ready to use for accommodation booking management projects
+## Technical Notes ⚙️
+- Built with PHP 🐘
+- Full CRUD operations for users, weather, destinations, and rooms 🔄
+- Ready to use for accommodation booking management projects ✅
 
-## Getting Started (Step by Step for Beginners)
+## Getting Started (Step by Step for Beginners) 🚀
 
 1. **Clone the repository, install dependencies, and set up environment:**
 ```bash
