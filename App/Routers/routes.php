@@ -7,6 +7,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DestinationController;
 use App\Controllers\RoomController;
 use App\Controllers\WeatherController;
+use App\Controllers\UserController;
 
 
 // ایجاد یک نمونه از میدلور
@@ -47,6 +48,13 @@ $router->put('v1','/rooms/{id}', RoomController::class, 'update', inaccess:'gues
 $router->delete('v1','/rooms/{id}', RoomController::class, 'destroy', "owners");
 $router->post('v1','/rooms/like', RoomController::class, 'room_like');
 $router->post('v1','/rooms/reserve', RoomController::class, 'room_reserve');
+
+// Users
+$router->get('v1','/users', UserController::class, 'index', ['admin', 'support']);
+$router->get('v1','/users/{id}', UserController::class, 'get');
+$router->post('v1','/users', UserController::class, 'store', inaccess:'guest');
+$router->put('v1','/users/{id}', UserController::class, 'update', inaccess:'guest');
+$router->delete('v1','/users/{id}', UserController::class, 'destroy', "owners");
 
 // Features
 $router->post('v1','/rooms/feature', RoomController::class, 'add_feature', inaccess:'guest');
