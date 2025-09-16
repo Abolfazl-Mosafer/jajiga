@@ -52,7 +52,7 @@ $router->post('v1','/rooms/reserve', RoomController::class, 'room_reserve');
 // Users
 $router->get('v1','/users', UserController::class, 'index', ['admin', 'support']);
 $router->get('v1','/users/{id}', UserController::class, 'get');
-$router->post('v1','/users', UserController::class, 'store', inaccess:'guest');
+$router->post('v1','/users', UserController::class, 'register', inaccess:'guest');
 $router->put('v1','/users/{id}', UserController::class, 'update', inaccess:'guest');
 $router->delete('v1','/users/{id}', UserController::class, 'destroy', "owners");
 
