@@ -34,6 +34,11 @@ class UserController extends Controller
         ], $request);
         $this->checkUnique(table: 'users', array: [['username', $request->username], ['mobile_number', $request->mobile_number]]);
 
+        // Check Profile Image
+        if($request->profile_image){
+            $$request->profile_image = Uploadbase64($request->profile_image);
+        }
+
         $newUser = $this->queryBuilder->table('users')        
             ->insert([
                 'username' => $request->username,

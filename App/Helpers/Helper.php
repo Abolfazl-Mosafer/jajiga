@@ -79,3 +79,29 @@ function getTokenFromRequest(){
         "body"    => $postData->token ?? null
     ];
 }
+
+
+function Uploadbase64($base64string, $folderPath){
+    $data = explode(',', $base64string);
+    $base64 = $data[1];
+    $format = explode(';', (explode('/', $data[0])[1]))[0];
+    $image = base64_decode($base64string);
+
+    $fileName =  RandomString(15) . '-' . time() . '.' . $format;
+    $path = $folderPath . '/' . $fileName;
+
+    // Save Image
+    file_put_contents($path, $image);
+
+    return $fileName;
+}
+
+function RandomString($length = 10)
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $randstring = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randstring = $characters[rand(0, strlen($characters))];
+    }
+    return $randstring;
+}
