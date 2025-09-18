@@ -81,19 +81,36 @@ function getTokenFromRequest(){
 }
 
 
-function Uploadbase64($base64string, $folderPath){
+function Uploadbase64($base64string, $folderPath = 'uploads'){
     $data = explode(',', $base64string);
     $base64 = $data[1];
     $format = explode(';', (explode('/', $data[0])[1]))[0];
-    $image = base64_decode($base64string);
 
     $fileName =  RandomString(15) . '-' . time() . '.' . $format;
     $path = $folderPath . '/' . $fileName;
 
     // Save Image
-    file_put_contents($path, $image);
+    $image = base64_to_jpeg($base64string, $path);
 
     return $fileName;
+}
+
+function base64_to_jpeg($base64_string, $output_file) {
+    // open the output file for writing
+    $ifp = fopen( $output_file, 'wb' ); 
+
+    // split the string on commas
+    // $data[ 0 ] == "data:image/png;base64"
+    // $data[ 1 ] == <actual base64 string>
+    $data = explode( ',', $base64_string );
+
+    // we could add validation here with ensuring count( $data ) > 1
+    fwrite( $ifp, base64_decode( $data[ 1 ] ) );
+
+    // clean up the file resource
+    fclose( $ifp ); 
+
+    return $output_file; 
 }
 
 function RandomString($length = 10)
@@ -101,7 +118,7 @@ function RandomString($length = 10)
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $randstring = '';
     for ($i = 0; $i < $length; $i++) {
-        $randstring = $characters[rand(0, strlen($characters))];
+        $randstring .= $characters[rand(0, strlen($characters))];
     }
     return $randstring;
 }

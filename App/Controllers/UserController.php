@@ -36,7 +36,7 @@ class UserController extends Controller
 
         // Check Profile Image
         if($request->profile_image){
-            $$request->profile_image = Uploadbase64($request->profile_image);
+            $request->profile_image = Uploadbase64($request->profile_image, 'uploads/profile_image');
         }
 
         $newUser = $this->queryBuilder->table('users')        
@@ -48,7 +48,7 @@ class UserController extends Controller
                 'role' => $request->role ?? 'guest',
                 'status' => $request->status ?? 'pending',
                 'created_at' => time(),
-                'updated_at' => time(),
+                'updated_at' => time()
             ])->execute();
 
         return $this->sendResponse(data: $newUser, message: "کاربر جدید با موفقیت ایجاد شد!");
