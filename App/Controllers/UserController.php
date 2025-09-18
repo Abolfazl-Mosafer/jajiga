@@ -80,4 +80,14 @@ class UserController extends Controller
 
         return $this->sendResponse(data: $deletedUser, message: "کاربر با موفقیت حذف شد");
     }
+
+    public function confirm($id)
+    {
+            $deletedUser = $this->queryBuilder->table('users')
+            ->update([
+                'status' => 'accept'
+            ])->where(value: $id)->execute();
+
+        return $this->sendResponse(data: $deletedUser, message: "کاربر با موفقیت تایید شد");
+    }
 }
