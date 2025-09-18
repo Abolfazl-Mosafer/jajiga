@@ -57,6 +57,7 @@ $router->put('v1','/users/{id}', UserController::class, 'update', inaccess:'gues
 $router->delete('v1','/users/{id}', UserController::class, 'destroy', "owners");
 $router->post('v1','/users/delete/{id}', UserController::class, 'destroy', "owners");
 $router->post('v1','/users/accept/{id}', UserController::class, 'confirm', "owners");
+$router->get('v1','/host/requests', UserController::class, 'host_requests', "owners");
 
 // Features
 $router->post('v1','/rooms/feature', RoomController::class, 'add_feature', inaccess:'guest');

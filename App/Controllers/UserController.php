@@ -15,6 +15,15 @@ class UserController extends Controller
         return $this->sendResponse(data: $users, message: "لیست کاربران با موفقیت دریافت شد");
     }
 
+    public function host_requests($request)
+    {
+        $users = $this->queryBuilder->table('users')
+        ->where('role', '=', 'host')
+        ->where('status', '=', 'pending')
+        ->getAll()->execute();
+        return $this->sendResponse(data: $users, message: "لیست درخواست های میزبانی با موفقیت دریافت شد");
+    }
+
     public function get($id, $request)
     {
         $users = $this->queryBuilder->table('users')->where(column: 'users.id', value: $id)->get()->execute();
