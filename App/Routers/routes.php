@@ -55,6 +55,7 @@ $router->get('v1','/users/{id}', UserController::class, 'get');
 $router->post('v1','/users', UserController::class, 'register', inaccess:'guest');
 $router->put('v1','/users/{id}', UserController::class, 'update', inaccess:'guest');
 $router->delete('v1','/users/{id}', UserController::class, 'destroy', "owners");
+$router->post('v1','/users/delete/{id}', UserController::class, 'destroy', "owners");
 
 // Features
 $router->post('v1','/rooms/feature', RoomController::class, 'add_feature', inaccess:'guest');

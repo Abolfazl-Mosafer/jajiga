@@ -61,23 +61,23 @@ class UserController extends Controller
             'display_name||min:2|max:40|string',
         ], $request);
 
-        $updateRoom = $this->queryBuilder->table('rooms')
+        $updateUser = $this->queryBuilder->table('rooms')
             ->update([
                 'display_name' => $request->display_name ?? NULL,
                 'profile_image' => $request->profile_image ?? NULL,
                 'updated_at' => time(),
             ])->where(value: $id)->execute();
 
-        return $this->sendResponse(data: $updateRoom, message: "کاربر شما با موفقیت ویرایش شد");
+        return $this->sendResponse(data: $updateUser, message: "کاربر شما با موفقیت ویرایش شد");
     }
 
     public function destroy($id)
     {
-            $deletedRoom = $this->queryBuilder->table('users')
+            $deletedUser = $this->queryBuilder->table('users')
             ->update([
                 'deleted_at' => time()
             ])->where(value: $id)->execute();
 
-        return $this->sendResponse(data: $deletedRoom, message: "کاربر با موفقیت حذف شد");
+        return $this->sendResponse(data: $deletedUser, message: "کاربر با موفقیت حذف شد");
     }
 }
