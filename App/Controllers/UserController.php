@@ -32,7 +32,7 @@ class UserController extends Controller
         return $this->sendResponse(data: $users, message: "کاربر با موفقیت دریافت شد");
     }
 
-    public function register($request){
+    public function store($request){
         // validate request
         $this->validate([
             'username||required|min:3|max:25|string',
@@ -70,10 +70,21 @@ class UserController extends Controller
             'display_name||min:2|max:40|string',
         ], $request);
 
-        $updateUser = $this->queryBuilder->table('rooms')
+        $user = $this->queryBuilder->table('users')->where(column: 'users.id', value: $id)->get()->execute();
+
+        // Check Profile Image
+        if($request->profile_image && $request->profile_image != $user->profile_image){
+            $request->profile_image = Uploadbase64($request->profile_image, 'uploads/profile_image');
+        }
+
+        $updateUser = $this->queryBuilder->table('users')
             ->update([
+                'username' => $request->username,
                 'display_name' => $request->display_name ?? NULL,
+                'mobile_number' => $request->mobile_number,
                 'profile_image' => $request->profile_image ?? NULL,
+                'role' => $request->role ?? 'guest',
+                'status' => $request->status ?? 'pending',
                 'updated_at' => time(),
             ])->where(value: $id)->execute();
 
