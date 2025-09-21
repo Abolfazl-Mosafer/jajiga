@@ -4,6 +4,9 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Dotenv\Dotenv;
 
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+$dotenv->load();
+
 if (!function_exists('dd')) {
     /**
      * Dump the passed variables and end the script.
@@ -26,8 +29,6 @@ if (!function_exists('dd')) {
 
 function getPostDataInput()
 {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
-    $dotenv->load();
     $secretKey = $_ENV['SECRET_KEY'];
 
     $jsonData = file_get_contents('php://input');
@@ -59,6 +60,11 @@ function getPath($version = true)
     if(!$version) $requestUri = explode('?', str_replace(['v1/', 'v2/'], '', $requestUri))[0];
 
     return $requestUri;
+}
+
+function getUploadPath(){
+    $path = $_ENV['UPLOAD_PATH'];
+    return $path;
 }
 
 function getApiVersion(){
