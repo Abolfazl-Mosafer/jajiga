@@ -59,7 +59,7 @@ class RoomController extends Controller
             'room_detail||string',
             'capacity||required|number',
             'addition_capacity||number',
-            'addition_capacity||required|number',
+            'daily_price||required|number'
         ], $request);
 
         if($request->user_detail->role == "host") $request->host_id = $request->user_detail->id;
@@ -68,6 +68,11 @@ class RoomController extends Controller
             ->where('id', '=', $request->host_id)
             ->where('role', '=', 'host')->get()->execute();
         if(!$getHost) return $this->sendResponse(message: "میزبان شما پیدا نشد", error: true, status: HTTP_BadREQUEST);
+
+        // Check Room Image
+        if($request->image){
+            $request->image = Uploadbase64($request->image, 'uploads/');
+        }
 
         $newRoom = $this->queryBuilder->table('rooms')
             ->insert([
@@ -79,6 +84,7 @@ class RoomController extends Controller
                 'off_percent' => $request->off_percent ?? 0,
                 'capacity' => $request->capacity,
                 'addition_capacity' => $request->addition_capacity ?? NULL,
+                'image' => $request->image ?? NULL,
                 'created_at' => time(),
                 'updated_at' => time()
             ])->execute();
