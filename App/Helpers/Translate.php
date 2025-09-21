@@ -14,6 +14,8 @@ function translate_key($input){
         "host_id" => "آیدی میزبان",
         "capacity" => "ظرفیت",
         "weather_id" => "آب و هوا",
+        "daily_price" => "قیمت روزانه",
+        "addition_capacity" => "ظرفیت اضافه",
     ];
 
     $isFind = false;

@@ -59,6 +59,7 @@ class RoomController extends Controller
             'room_detail||string',
             'capacity||required|number',
             'addition_capacity||number',
+            'addition_capacity||required|number',
         ], $request);
 
         if($request->user_detail->role == "host") $request->host_id = $request->user_detail->id;
@@ -74,6 +75,8 @@ class RoomController extends Controller
                 'destination_id' => $request->destination_id,
                 'title' => $request->title,
                 'room_detail' => $request->room_detail,
+                'daily_price' => $request->daily_price,
+                'off_percent' => $request->off_percent ?? 0,
                 'capacity' => $request->capacity,
                 'addition_capacity' => $request->addition_capacity ?? NULL,
                 'created_at' => time(),
