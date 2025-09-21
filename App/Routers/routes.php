@@ -51,7 +51,8 @@ $router->post('v1','/rooms/like', RoomController::class, 'room_like');
 $router->post('v1','/rooms/reserve', RoomController::class, 'room_reserve');
 
 // Users
-$router->get('v1','/users', UserController::class, 'index', ['admin', 'support']);
+$router->get('v1','/users', UserController::class, 'index', "owners");
+$router->get('v1','/users/hosts', UserController::class, 'get_hosts', "owners");
 $router->get('v1','/users/{id}', UserController::class, 'get');
 $router->post('v1','/users', UserController::class, 'store', inaccess:'guest');
 $router->put('v1','/users/{id}', UserController::class, 'update', inaccess:'guest');
