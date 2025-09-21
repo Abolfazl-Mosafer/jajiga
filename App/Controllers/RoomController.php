@@ -17,7 +17,8 @@ class RoomController extends Controller
     public function index($request)
     {
         $rooms = $this->queryBuilder->table('rooms')
-        ->select(['rooms.*', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather', 'IF(room_like.id IS NULL,0,1) as liked'])
+        ->select(['rooms.*', 'user.display_name as host_name', 'users.profile_image as host_profile', 'GROUP_CONCAT(features.title) as features', 'destinations.title as destination', 'weathers.title as weather', 'IF(room_like.id IS NULL,0,1) as liked'])
+        ->join('users', 'rooms.host_id', '=', 'users.id', 'LEFT')
         ->join('room_feature', 'rooms.id', '=', 'room_feature.room_id', 'LEFT')
         ->join('features', 'features.id', '=', 'room_feature.feature_id', 'LEFT')
         ->join('destinations', 'rooms.destination_id', '=', 'destinations.id', 'LEFT')
