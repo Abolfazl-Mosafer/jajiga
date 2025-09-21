@@ -15,7 +15,10 @@ class DestinationController extends Controller
 
     public function index()
     {
-        $destinations = $this->queryBuilder->table('destinations')->getAll()->execute();
+        $destinations = $this->queryBuilder->table('destinations')
+            ->select(['destinations.*', 'weathers.title as weather'])
+            ->join('weathers', 'destinations.weather_id', '=', 'weathers.id')
+            ->getAll()->execute();
 
         return $this->sendResponse(data: $destinations, message: "لیست مقصد ها با موفقیت گرفته شد");
     }

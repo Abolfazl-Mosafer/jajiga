@@ -13,6 +13,7 @@ function translate_key($input){
         "title" => "عنوان",
         "host_id" => "آیدی میزبان",
         "capacity" => "ظرفیت",
+        "weather_id" => "آب و هوا",
     ];
 
     $isFind = false;
