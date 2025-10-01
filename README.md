@@ -1,5 +1,7 @@
 # 🌟 Jajiga API 🌟
 
+<img src="uploads/photo_5974171184159377896_x.jpg" alt="Jajiga Logo" width="1000"/>
+
 **Jajiga** is a PHP-based API for managing accommodation bookings. It provides all essential features to handle users, destinations, weather, and rooms efficiently. 🏨✨
 
 ## Features 🛠️
